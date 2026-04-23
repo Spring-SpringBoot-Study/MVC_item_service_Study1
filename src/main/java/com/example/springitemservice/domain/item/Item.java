@@ -1,6 +1,5 @@
 package com.example.springitemservice.domain.item;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
