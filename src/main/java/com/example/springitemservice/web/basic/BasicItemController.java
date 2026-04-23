@@ -37,11 +37,11 @@ public class BasicItemController {
         return "basic/addForm";
     }
 
-    @PostMapping("/add")
-    public String save(@RequestParam String itemName,
-                       @RequestParam int price,
-                       @RequestParam Integer quantity,
-                       Model model) {
+    // @PostMapping("/add")
+    public String addItmeV1(@RequestParam String itemName,
+                            @RequestParam int price,
+                            @RequestParam Integer quantity,
+                            Model model) {
 
         Item item = new Item();
 
@@ -51,6 +51,33 @@ public class BasicItemController {
 
         itemRepository.save(item);
         model.addAttribute("item", item);
+
+        return "basic/item";
+    }
+
+    // @PostMapping("/add")
+    public String addItmeV2(@ModelAttribute("item") Item item, Model model) {
+
+        itemRepository.save(item);
+        // model.addAttribute("item", item); // @ModelAttribute("item") Item item 로 하면 "item"이라는 이름으로 model에 값을 넣어줌 - 생략 가능
+
+        return "basic/item";
+    }
+
+    // @PostMapping("/add")
+    public String addItmeV3(@ModelAttribute Item item, Model model) {
+
+        itemRepository.save(item);
+        // model.addAttribute("item", item); // @ModelAttribute Item item 로 하면 Item -> item 으로 첫글자만 소문자로 변환 후 "item"이라는 이름으로 model에 값을 넣어줌
+
+        return "basic/item";
+    }
+
+    @PostMapping("/add")
+    public String addItmeV4(Item item, Model model) {
+
+        itemRepository.save(item);
+        // model.addAttribute("item", item); // @ModelAttribute는 생략 가능
 
         return "basic/item";
     }
