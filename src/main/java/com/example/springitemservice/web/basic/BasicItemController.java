@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -82,13 +83,23 @@ public class BasicItemController {
         return "basic/item";
     }
 
-    @PostMapping("/add")
-    public String addItmeV5(Item item, Model model) { // PRG 문제 해결
+    // @PostMapping("/add")
+    public String addItmeV5(Item item) { // PRG 문제 해결
 
         itemRepository.save(item);
         // model.addAttribute("item", item); // @ModelAttribute는 생략 가능
 
         return "redirect:/basic/items/" + item.getId(); // 상품 등록 후에 상품의 상세 페이지로 GET 요청을 보냄
+    }
+
+    @PostMapping("/add")
+    public String addItmeV6(Item item, RedirectAttributes redirectAttributes) {
+
+        Item savedItem = itemRepository.save(item);
+        redirectAttributes.addAttribute("itemId", savedItem.getId());
+        redirectAttributes.addAttribute("status", true);
+
+        return "redirect:/basic/items/{itemId}"; // 성공시, http://localhost:8080/basic/items/3?status=true 와 같은 형식으로 status가 path 파라미터로 넘어감
     }
 
     @GetMapping("/{itemId}/edit")
